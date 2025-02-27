@@ -24,5 +24,10 @@ namespace CommitTracker
         {
             InitializeComponent();
         }
+
+        private void SubmitCommit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
