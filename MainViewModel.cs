@@ -9,50 +9,50 @@ using System.Threading.Tasks;
 using Mixpanel;
 
 
-    public partial class MainViewModel : ObservableObject
-    {
-        private readonly string _mixpanelToken = "b8f67a76005e316e79d244055f8f9df8";
+public partial class MainViewModel : ObservableObject
+{
+    private readonly string _mixpanelToken = "b8f67a76005e316e79d244055f8f9df8";
 
     private readonly MixpanelClient _mixpanel;
 
     [ObservableProperty]
-        string _userName;
+    string _userName;
 
-        [ObservableProperty]
-        int _commitCount;
+    [ObservableProperty]
+    int _commitCount;
 
-        [ObservableProperty]
-        DateTime _commitDate = DateTime.Now;
+    [ObservableProperty]
+    DateTime _commitDate = DateTime.Now;
 
-        [ObservableProperty]
-        string _selectedProject;
+    [ObservableProperty]
+    string _selectedProject;
 
-        public List<int> CommitCounts { get; } = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        public List<string> Projects { get; } = new List<string> { "Proj A", "Proj B", "Proj C" };
+    public List<int> CommitCounts { get; } = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    public List<string> Projects { get; } = new List<string> { "Proj A", "Proj B", "Proj C" };
     public string UserName { get; set; }
     public int CommitCount { get; set; }
-    public DateTime CommitDate { get; set; }
+    public DateTime CommitDate { get; set; } = DateTime.Now;
     public string SelectedProject { get; set; }
 
     public MainViewModel()
-        {
+    {
         _mixpanel = new MixpanelClient();
 
-            _mixpanel = new MixpanelClient(_mixpanelToken);
-        }
+        _mixpanel = new MixpanelClient(_mixpanelToken);
+    }
 
-        [RelayCommand]
-        public async void AddToMixpanelCommand()
+    [RelayCommand]
+    public async void AddToMixpanelCommand()
+    {
+        var data = new CommitData
         {
-            var data = new CommitData
-            {
-                UserName = UserName,
-                CommitCount = CommitCount,
-                CommitDate = CommitDate,
-                Project = SelectedProject
-            };
+            UserName = UserName,
+            CommitCount = CommitCount,
+            CommitDate = CommitDate,
+            Project = SelectedProject
+        };
 
-            var properties = new Dictionary<string, object>
+        var properties = new Dictionary<string, object>
         {
             { "UserName", data.UserName },
             { "CommitCount", data.CommitCount },
@@ -60,12 +60,12 @@ using Mixpanel;
             { "Project", data.Project }
         };
 
-            await _mixpanel.TrackAsync(data.UserName, "CommitAdded", properties);
+        await _mixpanel.TrackAsync(data.UserName, "CommitAdded", properties);
 
-            // Optionally, clear the form after submission
-            UserName = "";
-            CommitCount = 0;
-            CommitDate = DateTime.Now;
-            SelectedProject = null;
-        }
+        // Optionally, clear the form after submission
+        UserName = "";
+        CommitCount = 0;
+        CommitDate = DateTime.Now;
+        SelectedProject = null;
     }
+}
