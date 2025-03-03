@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mixpanel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,11 +24,14 @@ namespace CommitTracker
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainViewModel();
         }
 
-        private void SubmitCommit_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            MainViewModel mainViewModel = (MainViewModel)DataContext;
+            mainViewModel.AddToMixpanelCommand();
         }
     }
 }
